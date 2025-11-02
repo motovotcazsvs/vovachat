@@ -15,8 +15,21 @@ qt_add_executable(appvovachat
 qt_add_qml_module(appvovachat
     URI vovachat
     VERSION 1.0
-    QML_FILES
-        Main.qml
+    QML_FILES qml/Main.qml
+    QML_FILES qml/Chat.qml
+    QML_FILES qml/Settings.qml
+    QML_FILES qml/MainMenu.qml
+    QML_FILES qml/Control.qml
+    SOURCES core/chat.h core/chat.cpp
+    SOURCES core/control.h core/control.cpp
+    SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
+    SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
+    SOURCES core/llm.h core/llm.cpp
+    SOURCES core/chatgpt.h core/chatgpt.cpp
+    SOURCES core/gemini.h core/gemini.cpp
+    SOURCES core/grok.h core/grok.cpp
+    SOURCES core/settings.h core/settings.cpp
+    SOURCES core/trayiconmanager.h core/trayiconmanager.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
