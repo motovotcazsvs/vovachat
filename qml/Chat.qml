@@ -15,31 +15,30 @@ Item {
         onLoadingChanged: function(load) {
             if (load.status === WebView.LoadSucceededStatus) {
                 console.log("[QML] Page loaded, injecting test input")
-
                 view.runJavaScript(`
-                    (function waitForTextarea() {
-                        const textarea = document.querySelector("textarea");
-                        if (!textarea) {
-                            setTimeout(waitForTextarea, 500);
-                            return;
-                        }
+                (function waitForEditor() {
+                    const editor = document.querySelector('div[contenteditable="true"]');
+                    if (!editor) {
+                        setTimeout(waitForEditor, 500);
+                        return;
+                    }
 
-                        textarea.focus();
-                        textarea.value = "Привіт! Це тестовий запит 🚀";
-                        textarea.dispatchEvent(new Event("input", { bubbles: true }));
-                        textarea.dispatchEvent(
-                            new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                    editor.focus();
+
+                    document.execCommand("insertText", false, "Привіт! Це тестовий запит 🚀");
+
+                    setTimeout(() => {
+                        editor.dispatchEvent(
+                            new KeyboardEvent("keydown", {
+                                key: "Enter",
+                                bubbles: true
+                            })
                         );
-                    })();
+                        console.log("[JS] Sent via Enter");
+                    }, 200);
+                })();
                 `);
             }
         }
     }
-
-    // Binding {
-    //     target: view
-    //     property: "webChannel"
-    //     value: chatRoot.externalChannel
-    //     when: chatRoot.externalChannel !== undefined
-    // }
 }
