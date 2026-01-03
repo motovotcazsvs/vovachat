@@ -4,7 +4,7 @@ project(vovachat VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick WebView WebChannel)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -17,19 +17,24 @@ qt_add_qml_module(appvovachat
     VERSION 1.0
     QML_FILES qml/Main.qml
     QML_FILES qml/Chat.qml
-    QML_FILES qml/Settings.qml
-    QML_FILES qml/MainMenu.qml
-    QML_FILES qml/Control.qml
-    SOURCES core/chat.h core/chat.cpp
-    SOURCES core/control.h core/control.cpp
-    SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
-    SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
-    SOURCES core/llm.h core/llm.cpp
+    #QML_FILES qml/Settings.qml
+    #QML_FILES qml/MainMenu.qml
+    #QML_FILES qml/Control.qml
+    #SOURCES core/chat.h core/chat.cpp
+    #SOURCES core/control.h core/control.cpp
+    #SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
+    #SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
+    #SOURCES core/llm.h core/llm.cpp
     SOURCES core/chatgpt.h core/chatgpt.cpp
-    SOURCES core/gemini.h core/gemini.cpp
-    SOURCES core/grok.h core/grok.cpp
-    SOURCES core/settings.h core/settings.cpp
-    SOURCES core/trayiconmanager.h core/trayiconmanager.cpp
+    #SOURCES core/gemini.h core/gemini.cpp
+    #SOURCES core/grok.h core/grok.cpp
+    #SOURCES core/settings.h core/settings.cpp
+    #SOURCES core/trayiconmanager.h core/trayiconmanager.cpp
+    #SOURCES core/recognizervosk.h core/recognizervosk.cpp
+    #SOURCES core/recognizergoogle.h core/recognizergoogle.cpp
+    #RESOURCES core/SpeechHelper.java
+    #SOURCES core/copilot.h core/copilot.cpp
+    QML_FILES js/chatgpt.js
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -44,7 +49,7 @@ set_target_properties(appvovachat PROPERTIES
 )
 
 target_link_libraries(appvovachat
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Quick Qt6::WebView Qt6::WebChannel
 )
 
 include(GNUInstallDirs)
