@@ -1,28 +1,22 @@
 import QtQuick
-import QtWebView
+import QtWebEngine // Вместо QtWebView
 import QtWebChannel
 import vovachat
 
 Item {
     id: chatRoot
-
-    // Вместо алиаса используем явное свойство, которое примет объект из Main.qml
     property var externalChannel
 
-    WebView {
+    WebEngineView { // Вместо WebView
         id: view
         anchors.fill: parent
-        url: "https://chat.openai.com"
+        url: "https://chatgpt.com"
 
-        // В некоторых сборках Qt 6 на MSVC WebView требует явного указания,
-        // что мы присваиваем объект WebChannel
-    }
+        // Теперь эта строка 100% сработает в MSVC
+        webChannel: chatRoot.externalChannel
 
-    // Используем Binding, чтобы избежать ошибки при создании объекта
-    Binding {
-        target: view
-        property: "webChannel"
-        value: chatRoot.externalChannel
-        when: chatRoot.externalChannel !== undefined
+        // Включаем поддержку плагинов и каналов
+        settings.javascriptEnabled: true
+        settings.localContentCanAccessRemoteUrls: true
     }
 }

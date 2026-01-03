@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtWebView/QtWebView>
+#include <QtWebEngineQuick/QtWebEngineQuick>
 #include <QtWebChannel/QWebChannel>
 #include <QQmlContext>
 #include "core/chatgpt.h"
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     // ВАЖЛИВО: WebView має ініціалізуватися перед створенням двигуна QML
-    QtWebView::initialize();
+    QtWebEngineQuick::initialize();
 
     chatGPT backend;
     QWebChannel *channel = new QWebChannel(&app);
