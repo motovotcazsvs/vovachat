@@ -5,8 +5,6 @@ import vovachat
 
 Item {
     id: chatRoot
-
-    // Вместо алиаса используем явное свойство, которое примет объект из Main.qml
     property var externalChannel
 
     WebView {
@@ -14,15 +12,34 @@ Item {
         anchors.fill: parent
         url: "https://chat.openai.com"
 
-        // В некоторых сборках Qt 6 на MSVC WebView требует явного указания,
-        // что мы присваиваем объект WebChannel
+        onLoadingChanged: function(load) {
+            if (load.status === WebView.LoadSucceededStatus) {
+                console.log("[QML] Page loaded, injecting test input")
+
+                view.runJavaScript(`
+                    (function waitForTextarea() {
+                        const textarea = document.querySelector("textarea");
+                        if (!textarea) {
+                            setTimeout(waitForTextarea, 500);
+                            return;
+                        }
+
+                        textarea.focus();
+                        textarea.value = "Привіт! Це тестовий запит 🚀";
+                        textarea.dispatchEvent(new Event("input", { bubbles: true }));
+                        textarea.dispatchEvent(
+                            new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                        );
+                    })();
+                `);
+            }
+        }
     }
 
-    // Используем Binding, чтобы избежать ошибки при создании объекта
-    Binding {
-        target: view
-        property: "webChannel"
-        value: chatRoot.externalChannel
-        when: chatRoot.externalChannel !== undefined
-    }
+    // Binding {
+    //     target: view
+    //     property: "webChannel"
+    //     value: chatRoot.externalChannel
+    //     when: chatRoot.externalChannel !== undefined
+    // }
 }
