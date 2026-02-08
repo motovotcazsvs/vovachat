@@ -7,6 +7,9 @@
 
 int main(int argc, char *argv[])
 {
+    // Дозволяємо XMLHttpRequest читати локальні файли (потрібно для qrc:///...qwebchannel.js)
+    qputenv("QML_XHR_ALLOW_FILE_READ", "1");
+
     // Ініціалізація програми
     QGuiApplication app(argc, argv);
 

@@ -13,6 +13,6 @@ Window {
         id: webchat
         anchors.fill: parent
         // Передаем глобальный контекстный webChannel внутрь компонента
-        externalChannel: webChannel
+        //externalChannel: webChannel
     }
 }
