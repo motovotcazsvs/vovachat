@@ -38,13 +38,6 @@ Item {
             console.log("[ChatGPT Browser] " + consoleMessage.message);
         }
 
-        onLoadingChanged: function(loadRequest) {
-            if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
-                console.log("QML: ChatGPT сторінка завантажена.");
-                sendTimer.start()
-            }
-        }
-
         Timer {
             id: sendTimer
             interval: 5000
@@ -52,6 +45,13 @@ Item {
             onTriggered: {
                 view.startBridge();
                 chatBackendCpp.sendMessage("Привіт! Це автоматичний тест. Напиши 'OK', якщо бачиш це.");
+            }
+        }
+
+        onLoadingChanged: function(loadRequest) {
+            if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                console.log("QML: ChatGPT сторінка завантажена. Очікуємо 5 секунд для стабілізації.");
+                sendTimer.start();
             }
         }
 

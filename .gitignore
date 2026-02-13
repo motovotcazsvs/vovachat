@@ -1,3 +1,4 @@
 *.pro.user
 /build
+/deploy
 CMakeLists.txt.user
