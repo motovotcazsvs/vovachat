@@ -44,7 +44,7 @@ Item {
             repeat: false
             onTriggered: {
                 view.startBridge();
-                chatBackendCpp.sendMessage("Привіт! Це автоматичний тест. Напиши 'OK', якщо бачиш це.");
+                chatBackendCpp.sendMessage("Hello! This is an automatic test. Reply 'OK' if you see this.");
             }
         }
 

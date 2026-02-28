@@ -14,6 +14,7 @@ public:
 signals:
     void messageReceived(const QString &text);
     void requestSendMessage(const QString &text);
+    void responseReady(const QString &text);
 
 public slots:
     void onResponseFromJS(const QString &text);

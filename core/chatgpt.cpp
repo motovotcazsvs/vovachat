@@ -17,10 +17,11 @@ void chatGPT::onResponseFromJS(const QString &text)
 {
     qDebug() << "ChatGPT reply:" << text;
     emit messageReceived(text);
+    emit responseReady(text);
 
     m_responseCount++;
     if (m_responseCount == 1) {
-        QString followUp = "Дуже цікаво! А тепер розкажи щось смішне про програмістів.";
+        QString followUp = "Interesting! Now tell me a short joke about programmers.";
         qDebug() << "Sending follow-up message:" << followUp;
         sendMessage(followUp);
     }

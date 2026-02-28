@@ -15,8 +15,12 @@ SpeechSynthesizer::SpeechSynthesizer(QObject *parent)
             emit speakingFinished();
     });
 
-    // Мова за замовчуванням — українська
-    tts->setLocale(QLocale("uk_UA"));
+    // Мова за замовчуванням — англійська (для тесту)
+    tts->setLocale(QLocale("en_US"));
+    qDebug() << "TTS engine:" << tts->engine();
+    qDebug() << "TTS locale:" << tts->locale().name();
+    qDebug() << "TTS state:" << tts->state();
+    qDebug() << "Available locales:" << tts->availableLocales();
 }
 
 void SpeechSynthesizer::speak(const QString &text)
@@ -24,6 +28,8 @@ void SpeechSynthesizer::speak(const QString &text)
     if (!tts)
         return;
 
+    qDebug() << "SpeechSynthesizer::speak() called. Text length:" << text.length();
+    qDebug() << "TTS state before speak:" << tts->state();
     tts->say(text);
 }
 

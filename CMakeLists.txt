@@ -4,7 +4,7 @@ project(vovachat VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick WebEngineQuick WebChannel)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick WebEngineQuick WebChannel TextToSpeech)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -23,7 +23,7 @@ qt_add_qml_module(appvovachat
     #SOURCES core/chat.h core/chat.cpp
     #SOURCES core/control.h core/control.cpp
     #SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
-    #SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
+    SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
     #SOURCES core/llm.h core/llm.cpp
     SOURCES core/chatgpt.h core/chatgpt.cpp
     #SOURCES core/gemini.h core/gemini.cpp
@@ -49,7 +49,7 @@ set_target_properties(appvovachat PROPERTIES
 )
 
 target_link_libraries(appvovachat
-    PRIVATE Qt6::Quick Qt6::WebEngineQuick Qt6::WebChannel
+    PRIVATE Qt6::Quick Qt6::WebEngineQuick Qt6::WebChannel Qt6::TextToSpeech
 )
 
 include(GNUInstallDirs)
