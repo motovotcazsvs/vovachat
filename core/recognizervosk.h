@@ -1,33 +1,34 @@
 #ifndef RECOGNIZERVOSK_H
 #define RECOGNIZERVOSK_H
 
-#include <QAudioInput>
+#include <QObject>
+#include <QAudioSource>
 #include <QIODevice>
-#include <memory>
 
-
-
-class RecognizerVosk
+// Forward declarations для Vosk API (void* у реалізації)
+class RecognizerVosk : public QObject
 {
+    Q_OBJECT
 public:
-    RecognizerVosk();
+    explicit RecognizerVosk(QObject *parent = nullptr);
+    ~RecognizerVosk();
+
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
     Q_INVOKABLE bool isReady() const;
 
 signals:
-    void partialResult(QString text);
-    void finalResult(QString text);
+    void textRecognized(const QString &text);
+    void partialResult(const QString &text);
 
 private:
-    QAudioInput *audioInput = nullptr;
+    QAudioSource *audioSource = nullptr;
     QIODevice *audioDevice = nullptr;
 
     void *model = nullptr;
     void *recognizer = nullptr;
 
     bool ready = false;
-
 };
 
 #endif // RECOGNIZERVOSK_H

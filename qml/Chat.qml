@@ -39,19 +39,20 @@ Item {
         }
 
         Timer {
-            id: sendTimer
+            id: initTimer
             interval: 5000
             repeat: false
             onTriggered: {
                 view.startBridge();
-                chatBackendCpp.sendMessage("Привіт! Це автоматичний тест. Напиши 'OK', якщо бачиш це.");
+                console.log("QML: Починаємо запис голосу через Vosk...");
+                speechRec.start();
             }
         }
 
         onLoadingChanged: function(loadRequest) {
             if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
                 console.log("QML: ChatGPT сторінка завантажена. Очікуємо 5 секунд для стабілізації.");
-                sendTimer.start();
+                initTimer.start();
             }
         }
 

@@ -7,7 +7,6 @@ SpeechSynthesizer::SpeechSynthesizer(QObject *parent)
 {
     tts = new QTextToSpeech(this);
 
-    // Підключаємо сигнали
     connect(tts, &QTextToSpeech::stateChanged, this, [this](QTextToSpeech::State state){
         if (state == QTextToSpeech::Speaking)
             emit speakingStarted();
@@ -15,7 +14,6 @@ SpeechSynthesizer::SpeechSynthesizer(QObject *parent)
             emit speakingFinished();
     });
 
-    // Мова за замовчуванням — українська
     tts->setLocale(QLocale("uk_UA"));
     qDebug() << "TTS engine:" << tts->engine();
     qDebug() << "TTS locale:" << tts->locale().name();

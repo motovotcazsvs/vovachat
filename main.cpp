@@ -5,6 +5,7 @@
 #include <QQmlContext>
 #include "core/chatgpt.h"
 #include "core/speechsynthesizer.h"
+#include "core/speechrecognizer.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
 
     chatGPT backend;
     SpeechSynthesizer speechSynth;
+    SpeechRecognizer speechRec;
     QWebChannel *channel = new QWebChannel(&app);
 
     // Реєструємо C++ об'єкт для використання через WebChannel (в JS частині)
@@ -28,17 +30,23 @@ int main(int argc, char *argv[])
     QObject::connect(&backend, &chatGPT::responseReady,
                      &speechSynth, &SpeechSynthesizer::speak);
 
+    // Підключаємо розпізнавання мови → відправка в ChatGPT
+    QObject::connect(&speechRec, &SpeechRecognizer::textRecognized,
+                     &backend, &chatGPT::sendMessage);
+
     QQmlApplicationEngine engine;
 
     // --- РЕЄСТРАЦІЯ ОБ'ЄКТІВ ДЛЯ QML (Singleton) ---
     qmlRegisterSingletonInstance("vovachat", 1, 0, "SharedChannel", channel);
     qmlRegisterSingletonInstance("vovachat", 1, 0, "ChatBackendCpp", &backend);
     qmlRegisterSingletonInstance("vovachat", 1, 0, "SpeechSynth", &speechSynth);
+    qmlRegisterSingletonInstance("vovachat", 1, 0, "SpeechRec", &speechRec);
 
     // Додатково реєструємо як контекстні властивості для зворотної сумісності
     engine.rootContext()->setContextProperty(QStringLiteral("webChannel"), channel);
     engine.rootContext()->setContextProperty(QStringLiteral("chatBackendCpp"), &backend);
     engine.rootContext()->setContextProperty(QStringLiteral("speechSynth"), &speechSynth);
+    engine.rootContext()->setContextProperty(QStringLiteral("speechRec"), &speechRec);
 
     // Обробка помилок завантаження QML
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,

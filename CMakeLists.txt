@@ -4,7 +4,7 @@ project(vovachat VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick WebEngineQuick WebChannel TextToSpeech)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick WebEngineQuick WebChannel TextToSpeech Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -22,7 +22,7 @@ qt_add_qml_module(appvovachat
     #QML_FILES qml/Control.qml
     #SOURCES core/chat.h core/chat.cpp
     #SOURCES core/control.h core/control.cpp
-    #SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
+    SOURCES core/speechrecognizer.h core/speechrecognizer.cpp
     SOURCES core/speechsynthesizer.h core/speechsynthesizer.cpp
     #SOURCES core/llm.h core/llm.cpp
     SOURCES core/chatgpt.h core/chatgpt.cpp
@@ -30,7 +30,7 @@ qt_add_qml_module(appvovachat
     #SOURCES core/grok.h core/grok.cpp
     #SOURCES core/settings.h core/settings.cpp
     #SOURCES core/trayiconmanager.h core/trayiconmanager.cpp
-    #SOURCES core/recognizervosk.h core/recognizervosk.cpp
+    SOURCES core/recognizervosk.h core/recognizervosk.cpp
     #SOURCES core/recognizergoogle.h core/recognizergoogle.cpp
     #RESOURCES core/SpeechHelper.java
     #SOURCES core/copilot.h core/copilot.cpp
@@ -48,8 +48,13 @@ set_target_properties(appvovachat PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+# Vosk API paths
+set(VOSK_DIR ${CMAKE_SOURCE_DIR}/vosk/vosk-win64-0.3.45)
+target_include_directories(appvovachat PRIVATE ${VOSK_DIR})
+
 target_link_libraries(appvovachat
-    PRIVATE Qt6::Quick Qt6::WebEngineQuick Qt6::WebChannel Qt6::TextToSpeech
+    PRIVATE Qt6::Quick Qt6::WebEngineQuick Qt6::WebChannel Qt6::TextToSpeech Qt6::Multimedia
+    ${VOSK_DIR}/libvosk.lib
 )
 
 include(GNUInstallDirs)

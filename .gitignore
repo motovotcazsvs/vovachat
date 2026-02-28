@@ -2,3 +2,9 @@
 /build
 /deploy
 CMakeLists.txt.user
+
+# Vosk — великі файли, не підходять для GitHub
+vosk/model/
+vosk/*.zip
+vosk/vosk-win64-0.3.45/*.dll
+vosk/vosk-win64-0.3.45/*.lib

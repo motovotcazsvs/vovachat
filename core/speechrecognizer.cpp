@@ -1,4 +1,5 @@
 #include "speechrecognizer.h"
+#include <QDebug>
 
 #if defined(Q_OS_ANDROID)
 #include "recognizergoogle.h"
@@ -12,18 +13,21 @@ SpeechRecognizer::SpeechRecognizer(QObject *parent) :
 #if defined(Q_OS_ANDROID)
     impl = new RecognizerGoogle(this);
 #elif defined(Q_OS_WIN)
-    impl = new RecognizerVosk(this);
-#endif
+    auto *vosk = new RecognizerVosk(this);
+    impl = vosk;
 
-    if(impl) {
-        QObject::connect(impl, SIGNAL(textRecognized(QString)), this, SIGNAL(textRecognized(QString)));
-    }
+    // Підключаємо сигнал розпізнаного тексту
+    connect(vosk, &RecognizerVosk::textRecognized, this, &SpeechRecognizer::textRecognized);
+
+    qDebug() << "SpeechRecognizer: Vosk backend, ready:" << vosk->isReady();
+#endif
 }
 
 void SpeechRecognizer::start(const QString &lang)
 {
+    Q_UNUSED(lang);
     if (impl)
-        QMetaObject::invokeMethod(impl, "start", Q_ARG(QString, lang));
+        QMetaObject::invokeMethod(impl, "start");
 }
 
 void SpeechRecognizer::stop()
