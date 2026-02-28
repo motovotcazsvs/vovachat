@@ -15,8 +15,8 @@ SpeechSynthesizer::SpeechSynthesizer(QObject *parent)
             emit speakingFinished();
     });
 
-    // Мова за замовчуванням — англійська (для тесту)
-    tts->setLocale(QLocale("en_US"));
+    // Мова за замовчуванням — українська
+    tts->setLocale(QLocale("uk_UA"));
     qDebug() << "TTS engine:" << tts->engine();
     qDebug() << "TTS locale:" << tts->locale().name();
     qDebug() << "TTS state:" << tts->state();

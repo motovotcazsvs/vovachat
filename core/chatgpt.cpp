@@ -21,7 +21,7 @@ void chatGPT::onResponseFromJS(const QString &text)
 
     m_responseCount++;
     if (m_responseCount == 1) {
-        QString followUp = "Interesting! Now tell me a short joke about programmers.";
+        QString followUp = "Дуже цікаво! А тепер розкажи щось смішне про програмістів.";
         qDebug() << "Sending follow-up message:" << followUp;
         sendMessage(followUp);
     }
